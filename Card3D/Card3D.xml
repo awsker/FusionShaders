@@ -1,7 +1,7 @@
 <effect>
 <name>Card 3D</name>
-<author>Rotate a card in 3D</author>
-<description>v1.0 - Requires at least 1px of transparent border to work properly</description>
+<author>asker</author>
+<description>Rotate a card in 3D - v1.0</description>
 <parameter>
 		<name>fX</name>
 		<code>fX</code>
