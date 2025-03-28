@@ -1,0 +1,55 @@
+<effect>
+<name>Card 3D</name>
+<author>Rotate a card in 3D</author>
+<description>v1.0 - Requires at least 1px of transparent border to work properly</description>
+<parameter>
+		<name>fX</name>
+		<code>fX</code>
+		<description>X Rotation</description>
+		<type>float</type>
+		<property>edit</property>
+		<value>0.0</value>
+</parameter>
+<parameter>
+		<name>fY</name>
+		<code>fY</code>
+		<description>Y Rotation</description>
+		<type>float</type>
+		<property>edit</property>
+		<value>0.0</value>
+</parameter>
+<parameter>
+		<name>fZ</name>
+		<code>fZ</code>
+		<description>Z Rotation</description>
+		<type>float</type>
+		<property>edit</property>
+		<value>0.0</value>
+</parameter>
+<parameter>
+		<name>fD</name>
+		<code>fD</code>
+		<description>Distance of camera</description>
+		<type>float</type>
+		<property>edit</property>
+		<value>1.0</value>
+</parameter>
+
+<parameter>
+		<name>Zoom</name>
+		<code>fZoom</code>
+		<description>Zoom grade</description>
+		<type>float</type>
+		<property>edit</property>
+		<value>1.0</value>
+</parameter>
+
+<sampler>
+	<index>0</index>
+	<filter>linear</filter>
+	<filter>linear</filter>
+	<addressU>Border</addressU>
+	<addressV>Border</addressV>
+	<BorderColor>0</BorderColor>
+</sampler>
+</effect>
