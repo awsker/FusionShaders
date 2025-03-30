@@ -1,4 +1,4 @@
-// Card3D with Foil Effect
+// Card3D with Glass Effect
 // v1.0
 // By asker, inspired by Perspective3D by MuddyMole/Sketchy
 
