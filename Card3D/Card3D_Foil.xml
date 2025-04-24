@@ -29,7 +29,7 @@
 <parameter>
 		<name>Distance</name>
 		<code>fDist</code>
-		<description>Simulated distance of camera</description>
+		<description>Simulated distance of camera (i.e. FOV)</description>
 		<type>float</type>
 		<property>edit</property>
 		<value>1.0</value>
