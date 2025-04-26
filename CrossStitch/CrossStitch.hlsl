@@ -1,3 +1,7 @@
+// Cross-Stich
+// v1.0
+// By asker
+
 Texture2D<float4> img : register(t0);
 sampler imgSampler : register(s0);
 Texture2D<float4> patternImg : register(t1);
@@ -18,7 +22,7 @@ cbuffer PS_VARIABLES : register(b0)
     int patternHeight;
     float shadowDistance;
     float shadowOpacity;
-}
+};
 
 cbuffer PS_PIXELSIZE : register(b1)
 {
@@ -36,48 +40,29 @@ float4 Demultiply(float4 _color)
 
 float4 ps_main(PS_INPUT In) : SV_TARGET
 {
-    int SHADOW_ITERATIONS = 4;
-    float4 outColor;
-    float shadow = 0.0;
+    //Calculate the size of one stitch in uv space
     float2 texelStitchSize = float2(stitchWidth * fPixelWidth, stitchHeight * fPixelHeight);
-    
-    for (int i = 0; i < SHADOW_ITERATIONS; i++) {
-        float2 offset = float2(i * fPixelWidth, i * fPixelHeight) * -shadowDistance / SHADOW_ITERATIONS;
-        //Calculate the size of each stitch in uv space
-        float2 gridPos = (In.texCoord + offset) / texelStitchSize;
-        //Fetch the center of the square (by adding one half grid) and convert to uv position
-        float4 color = img.Sample(imgSampler, (floor(gridPos) + 0.5) * texelStitchSize);
+    //Calculate the size of each stitch in uv space
+    float2 gridPos = texCoord / texelStitchSize;
+    //Fetch the center of the square (by adding one half grid) and convert to uv position
+    float4 color = img.Sample(imgSampler, (floor(gridPos) + 0.5) * texelStitchSize);
 
-        float4 patternColor = patternImg.Sample(patternSampler, gridPos / float2(patternWidth, patternHeight));
-        if(i == 0)
-            outColor = color * patternColor;
-        shadow += patternColor.a * color.a;
-    }
-    // Apply shadow effect
-    return lerp(float4(0, 0, 0, shadow * shadowOpacity / SHADOW_ITERATIONS), outColor, outColor.a) * In.Tint;
+    float4 patternColor = patternImg.Sample(patternSampler, gridPos / float2(patternWidth, patternHeight));
+    return color * patternColor * In.Tint;
 }
 
 float4 ps_main_pm(PS_INPUT In) : SV_TARGET
 {
-    int SHADOW_ITERATIONS = 4;
-    float4 outColor;
-    float shadow = 0.0;
+    //Calculate the size of one stitch in uv space
     float2 texelStitchSize = float2(stitchWidth * fPixelWidth, stitchHeight * fPixelHeight);
-    
-    for (int i = 0; i < SHADOW_ITERATIONS; i++) {
-        float2 offset = float2(i * fPixelWidth, i * fPixelHeight) * -shadowDistance / SHADOW_ITERATIONS;
-        //Calculate the size of each stitch in uv space
-        float2 gridPos = (In.texCoord + offset) / texelStitchSize;
-        //Fetch the center of the square (by adding one half grid) and convert to uv position
-        float4 color = Demultiply(img.Sample(imgSampler, (floor(gridPos) + 0.5) * texelStitchSize));
+    //Calculate the size of each stitch in uv space
+    float2 gridPos = texCoord / texelStitchSize;
+    //Fetch the center of the square (by adding one half grid) and convert to uv position
+    float4 color = Demultiply(img.Sample(imgSampler, (floor(gridPos) + 0.5) * texelStitchSize));
 
-        float4 patternColor = Demultiply(patternImg.Sample(patternSampler, gridPos / float2(patternWidth, patternHeight)));
-        if(i == 0)
-            outColor = color * patternColor;
-        shadow += patternColor.a * color.a;
-    }
-    // Apply shadow effect
-    outColor = lerp(float4(0, 0, 0, shadow * shadowOpacity / SHADOW_ITERATIONS), outColor, outColor.a);
+    float4 patternColor = Demultiply(patternImg.Sample(patternSampler, gridPos / float2(patternWidth, patternHeight)));
+    float4 outColor = color * patternColor;
+    //Premultiply alpha
     outColor.rgb *= outColor.a;
     return outColor * In.Tint;
 }

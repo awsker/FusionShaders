@@ -1,7 +1,7 @@
 <effect>
-<name>Cross-stitch</name>
+<name>Cross-stitch With Drop Shadow</name>
 <author>asker</author>
-<description>Pixelate with a cross-stitch pattern</description>
+<description>Pixelate with a cross-stitch pattern and a simple shadow</description>
 <parameter>
 		<name>Stitch Width</name>
 		<code>stitchWidth</code>
@@ -40,6 +40,22 @@
 		<type>int</type>
 		<property>edit</property>
 		<value>2</value>
+</parameter>
+<parameter>
+		<name>Shadow Distance</name>
+		<code>shadowDistance</code>
+		<description>Distance to sample shadow from</description>
+		<type>float</type>
+		<property>edit</property>
+		<value>0.2</value>
+</parameter>
+<parameter>
+		<name>Shadow Opacity</name>
+		<code>shadowOpacity</code>
+		<description>Shadow opacity (0.0 being fully invisible and 1.0 being default visibility)</description>
+		<type>float</type>
+		<property>edit</property>
+		<value>1.0</value>
 </parameter>
 <sampler>
 	<index>1</index>
