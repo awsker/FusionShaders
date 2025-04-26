@@ -58,19 +58,19 @@ float4 ps_main( in PS_INPUT In ) : SV_TARGET {
 	float2 xy = lerp(c.xy, p.xy, -c.z / (p.z - c.z));
 
 	//Get the color from card image
-	float4 cardColor = img.Sample(imgSampler, ((xy - 0.5) / fZoom) + 0.5);
+	float4 cardColor = Demultiply(img.Sample(imgSampler, ((xy - 0.5) / fZoom) + 0.5));
     if(cx * cy >= oneSided - 1) { //If one-sided, only apply effect from the front (when cos(x) * cos(y) >= 0)
-        float3 enhancedColor = pow(abs(cardColor.rgb), abs(1.3)) * 2.0; // Intensify colors
+        float3 enhancedColor = pow(abs(cardColor.rgb), 1.3) * 2.0; // Intensify colors
         float brightness = dot(enhancedColor, float3(0.299, 0.587, 0.114));
         float alpha = cardColor.a * (1.0 - smoothstep(0.9, 1.0, brightness)*0.5);
         float glare = smoothstep(0.1, 0.4, brightness) * saturate(cos((dX + In.texCoord.x) * 8.0 + (dY + In.texCoord.y) * 5.0));
         float blurOffset = alpha * 0.002; //The more opaque, the higher the blur
         //Get the color from the background
-        float4 bkdColor = (bkd.Sample(bkdSampler, In.texCoord) +
-					 bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, -blurOffset)) + 
-					 bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, -blurOffset)) +
-					 bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, blurOffset)) + 
-					 bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, blurOffset))) * 0.2;
+        float4 bkdColor = (Demultiply(bkd.Sample(bkdSampler, In.texCoord)) +
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, -blurOffset))) + 
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, -blurOffset))) +
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, blurOffset))) + 
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, blurOffset)))) * 0.2;
         cardColor = float4(bkdColor.rgb * enhancedColor.rgb + glare * 0.3, alpha);
     }
     return cardColor * In.Tint;
@@ -111,12 +111,11 @@ float4 ps_main_pm( in PS_INPUT In ) : SV_TARGET {
         float glare = smoothstep(0.1, 0.4, brightness) * saturate(cos((dX + In.texCoord.x) * 8.0 + (dY + In.texCoord.y) * 5.0));
         float blurOffset = alpha * 0.002; //The more opaque, the higher the blur
         //Get the color from the background
-        float4 bkdColor = (bkd.Sample(bkdSampler, In.texCoord) +
-					 bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, -blurOffset)) + 
-					 bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, -blurOffset)) +
-					 bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, blurOffset)) + 
-					 bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, blurOffset))) * 0.2;
-        bkdColor = Demultiply(bkdColor);
+        float4 bkdColor = (Demultiply(bkd.Sample(bkdSampler, In.texCoord)) +
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, -blurOffset))) + 
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, -blurOffset))) +
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(blurOffset, blurOffset))) + 
+					 Demultiply(bkd.Sample(bkdSampler, In.texCoord + float2(-blurOffset, blurOffset)))) * 0.2;
         cardColor = float4(bkdColor.rgb * enhancedColor.rgb + glare * 0.3, alpha);
     }
     cardColor.rgb *= cardColor.a;

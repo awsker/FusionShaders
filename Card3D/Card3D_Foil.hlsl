@@ -60,9 +60,9 @@ float4 ps_main( in PS_INPUT In ) : SV_TARGET {
 	float2 xy = lerp(c.xy, p.xy, -c.z / (p.z - c.z));
 
 	//Get the color from card image
-	float4 cardColor = img.Sample(imgSampler, ((xy - 0.5) / fZoom) + 0.5);
+	float4 cardColor = Demultiply(img.Sample(imgSampler, ((xy - 0.5) / fZoom) + 0.5));
 	//Get the color from pattern image
-	float3 patternColor = patternImg.Sample(patternImgSampler, ((xy - 0.5) / fZoom) + 0.5).rgb;
+	float3 patternColor = Demultiply(patternImg.Sample(patternImgSampler, ((xy - 0.5) / fZoom) + 0.5)).rgb;
 
 	//Approximate a rainbow coefficient based on card rotation and texel position
 	float a = (dX + In.texCoord.x) * 14.0 + (dY + In.texCoord.y) * 7.0;
@@ -110,7 +110,7 @@ float4 ps_main_pm( in PS_INPUT In ) : SV_TARGET {
 
 	//Get the color from card image
 	float4 cardColor = Demultiply(img.Sample(imgSampler, ((xy - 0.5) / fZoom) + 0.5));
-    //Get the color from pattern image
+	//Get the color from pattern image
 	float3 patternColor = Demultiply(patternImg.Sample(patternImgSampler, ((xy - 0.5) / fZoom) + 0.5)).rgb;
 
     //Approximate a rainbow coefficient based on card rotation and texel position
