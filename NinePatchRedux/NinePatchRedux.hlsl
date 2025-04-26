@@ -54,7 +54,7 @@ float4 ps_main(PS_INPUT In) : SV_TARGET
     if(In.texCoord.y > 1.0 - chunkHeight) {
         newCoord.y = ONETHIRD*(2.0 + (In.texCoord.y - 1.0 + chunkHeight) / chunkHeight);
     }
-    float4 color = Tex0.Sample(Tex0Sampler, newCoord);
+    float4 color = Demultiply(Tex0.Sample(Tex0Sampler, newCoord));
     return color * In.Tint;
 }
 
@@ -87,6 +87,6 @@ float4 ps_main_pm(PS_INPUT In) : SV_TARGET
     if(In.texCoord.y > 1.0 - chunkHeight) {
         newCoord.y = ONETHIRD*(2.0 + (In.texCoord.y - 1.0 + chunkHeight) / chunkHeight);
     }
-    float4 color = Demultiply(Tex0.Sample(Tex0Sampler, newCoord));
+    float4 color = Tex0.Sample(Tex0Sampler, newCoord);
     return color * In.Tint;
 }
