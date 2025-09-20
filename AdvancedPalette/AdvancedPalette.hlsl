@@ -15,10 +15,10 @@ struct PS_OUTPUT
 cbuffer PS_VARIABLES : register(b0)
 {
 	int swapRed;
-	int swapGreen;
-	int swapBlue;
 	float4 redColor;
+	int swapGreen;
 	float4 greenColor;
+	int swapBlue;
 	float4 blueColor;
 }
 
