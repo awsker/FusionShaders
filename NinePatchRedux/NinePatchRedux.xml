@@ -5,17 +5,15 @@
 <parameter>
 		<name>X Scale factor</name>
 		<code>xScale</code>
-		<description>Used to determine non-scaled size.</description>
+		<description>Update this to the object's current X Scale</description>
 		<type>float</type>
-		<property>spin</property>
 		<value>1.0</value>
 </parameter>
 <parameter>
 		<name>Y Scale factor</name>
 		<code>yScale</code>
-		<description>Used to determine non-scaled size.</description>
+		<description>Update this to the object's current Y Scale</description>
 		<type>float</type>
-		<property>spin</property>
 		<value>1.0</value>
 </parameter>
 <parameter>
